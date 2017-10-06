@@ -1,0 +1,138 @@
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body onclick="bolt()"></body>
+
+<style type="text/css">
+	body{
+		margin: 0;
+		padding: 0;
+		background: black;
+		overflow: hidden;
+	}
+
+	.bright{
+		animation-name: bright;
+		animation-duration: 1s;
+		animation-timing-function: ease-out;
+	}
+
+	@keyframes bright{
+		0%{
+			background: white;
+		}
+		100%{
+			background: black;
+		}
+	}
+
+	body > .lightning{
+		position: absolute;
+		top: 0;
+		background: white;
+		width: 4px;
+
+		/*animation-name: lightning;*/
+		animation-duration: 1.5s;
+		animation-fill-mode: forwards;
+	}
+
+	body > .rain{
+		position: absolute;
+		top: 0;
+		background: gray;
+		width: 3px;
+		height: 20px;
+		transform: rotate(-12deg);
+
+		animation-name: rain;
+		animation-duration: 1.5s;
+		animation-timing-function: ease-in;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes lightning{
+		0%{
+			opacity: 1;
+		}
+		100%{
+			opacity: 0;
+			display: none;
+		}
+	}
+
+	@keyframes rain{
+		0%{
+			top: -30px;
+			margin-left: 0px;
+		}
+		100%{
+			top: calc(100% + 20px);
+			margin-left: 200px;
+		}
+	}
+</style>
+
+<script type="text/javascript">
+	function bolt(){
+		var offset_width = event.clientX;
+		var offset_height = event.clientY;
+		var bolt_length = 0;
+		var end_point = event.clientY;
+
+		while ( bolt_length < end_point ) {
+			var segment_height_before = Math.floor((Math.random() * 40) + 20);
+			var segment_rotation = (Math.floor((Math.random() * 60) + 1 ))-30;
+			var segment_height = 0;
+
+			$('body').append('<div class="lightning" style="left: ' + offset_width + 'px; height: ' + segment_height_before + 'px; transform: translateY(' + bolt_length + 'px) rotate(' + (segment_rotation) +'deg)"></div>');
+
+			if ( segment_rotation < 0 ) {
+				segment_rotation = segment_rotation * -1
+			}
+
+			segment_height = Math.sin(segment_rotation)*segment_height_before;
+
+			if ( segment_height < 0 ) {
+				segment_height = segment_height * -1;
+			}
+
+			alert(segment_height);
+
+			bolt_length = bolt_length + segment_height;
+		}
+
+		brightness();
+
+		$('body > div').delay(1500).queue(function(){
+			$(this).addClass('animation-fin');
+		});
+
+		$('.animation-fin').remove();
+	}
+
+	// function rain(){
+	// 	var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
+
+	// 	$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
+
+	// 	$('body > div').delay(1500).queue(function(){
+	// 		$(this).addClass('animation-fin');
+	// 	});
+
+	// 	$('.animation-fin').remove();
+	// }
+
+	// function brightness(){
+	// 	$('body').removeClass('bright');
+	// 	setTimeout(function() {
+	// 	    $('body').addClass('bright');
+	// 	},1);
+	// }
+
+	// $(function() {
+ //        rain();
+ //        setInterval(function() { rain() }, 8);
+ //    });
+</script>
