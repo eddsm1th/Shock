@@ -89,16 +89,16 @@
 			$('body').append('<div class="lightning" style="left: ' + offset_width + 'px; height: ' + segment_height_before + 'px; transform: translateY(' + bolt_length + 'px) rotate(' + (segment_rotation) +'deg)"></div>');
 
 			if ( segment_rotation < 0 ) {
+				alert(segment_rotation);
 				segment_rotation = segment_rotation * -1
+				alert(segment_rotation);
 			}
 
-			segment_height = Math.sin(segment_rotation)*segment_height_before;
+			segment_height = Math.sin(180-(segment_rotation+90))*segment_height_before;
 
 			if ( segment_height < 0 ) {
 				segment_height = segment_height * -1;
 			}
-
-			alert(segment_height);
 
 			bolt_length = bolt_length + segment_height;
 		}
