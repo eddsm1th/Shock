@@ -87,7 +87,7 @@
 			var segment_height = Math.floor((Math.random() * 48) + 12);
 			var segment_rotation = (Math.floor((Math.random() * 100) + 1 ))-50;
 
-			var testing = $('<div id="lightning' + current_segment.toString() + '" class="lightning" style="left: ' + (currentX - 2) + 'px; top: ' + bolt_length + 'px; height: ' + segment_height + 'px; transform: rotate(' + segment_rotation +'deg)"></div>').appendTo('body');
+			var testing = $('<div id="lightning' + current_segment.toString() + '" class="lightning" style="opacity: 0.3;left: ' + (currentX - 2) + 'px; top: ' + bolt_length + 'px; height: ' + segment_height + 'px; transform: rotate(' + segment_rotation +'deg)"></div>').appendTo('body');
 
 			var width = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().width;
 			var height = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().height;
@@ -104,6 +104,7 @@
 			if ( segment_rotation < 0 ) {
 				$('#lightning' + current_segment.toString()).css('left',(currentX - 2)+((width/2)) + 'px');
 				currentX += width;
+				segment_rotation = segment_rotation * -1;
 			}
 
 			current_segment ++;
