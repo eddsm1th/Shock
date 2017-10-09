@@ -27,18 +27,17 @@
 		}
 	}
 
-	body > .lightning{
+	body .lightning{
 		position: absolute;
-		top: 0;
 		background: white;
 		width: 4px;
 
-		animation-name: lightning;
+		/*animation-name: lightning;*/
 		animation-duration: 1.5s;
 		animation-fill-mode: forwards;
 	}
 
-	body > .rain{
+	body .rain{
 		position: absolute;
 		top: 0;
 		background: gray;
@@ -79,16 +78,28 @@
 		var offset_width = event.clientX;
 		var offset_height = event.clientY;
 		var bolt_length = 0;
-		var end_point = event.clientY;
 		var currentX = offset_width;
+		var current_segment = 1;
 
-		while ( bolt_length < end_point ) {
-			var segment_height = Math.floor((Math.random() * 40) + 20);
+		while ( bolt_length < document.body.offsetHeight ) {
+			var segment_height = Math.floor((Math.random() * 40) + 12);
 			var segment_rotation = (Math.floor((Math.random() * 60) + 1 ))-30;
 
-			$('body').append('<div class="lightning" style="left: ' + currentX + 'px; height: ' + segment_height + 'px; transform: translateY(' + (bolt_length - 4) + 'px) rotate(' + (segment_rotation) +'deg)"></div>');
+			var testing = $('<div id="lightning' + current_segment.toString() + '" class="lightning" style="left: ' + currentX + 'px; top: ' + (bolt_length) + 'px; height: ' + segment_height + 'px; transform: rotate(' + segment_rotation +'deg)"></div>').appendTo('body');
+
+			var width = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().width;
+			var height = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().height;
+			console.log('width: ' + width + '    height: ' + height);
 
 			bolt_length = bolt_length + segment_height;
+
+			if ( segment_rotation > 0 ) {
+				currentX -= width;
+			}else if ( segment_rotation < 0 ) {
+				currentX += width;
+			}
+
+			current_segment ++;
 		}
 
 		brightness();
@@ -100,27 +111,27 @@
 		$('.animation-fin').remove();
 	}
 
-	function rain(){
-		var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
+	// function rain(){
+	// 	var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
 
-		$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
+	// 	$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
 
-		$('body > div').delay(1500).queue(function(){
-			$(this).addClass('animation-fin');
-		});
+	// 	$('body > div').delay(1500).queue(function(){
+	// 		$(this).addClass('animation-fin');
+	// 	});
 
-		$('.animation-fin').remove();
-	}
+	// 	$('.animation-fin').remove();
+	// }
 
-	function brightness(){
-		$('body').removeClass('bright');
-		setTimeout(function() {
-		    $('body').addClass('bright');
-		},1);
-	}
+	// function brightness(){
+	// 	$('body').removeClass('bright');
+	// 	setTimeout(function() {
+	// 	    $('body').addClass('bright');
+	// 	},1);
+	// }
 
-	$(function() {
-        rain();
-        setInterval(function() { rain() }, 8);
-    });
+	// $(function() {
+ //        rain();
+ //        setInterval(function() { rain() }, 8);
+ //    });
 </script>
