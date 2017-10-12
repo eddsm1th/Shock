@@ -33,7 +33,7 @@
 		width: 4px;
 		border-radius: 2px;
 
-		/*animation-name: lightning;*/
+		animation-name: lightning;
 		animation-duration: 1.5s;
 		animation-fill-mode: forwards;
 	}
@@ -93,7 +93,7 @@
 			var height = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().height;
 			console.log('width: ' + width + '    height: ' + height);
 
-			$('<div style="border: 1px solid red; z-index: 9999; width: ' + width + '; height: ' + height + '; position: absolute; left: ' + currentX + 'px; top: ' + bolt_length + 'px;"></div>').appendTo('body');
+			// $('<div style="border: 1px solid red; z-index: 9999; width: ' + width + '; height: ' + height + '; position: absolute; left: ' + currentX + 'px; top: ' + bolt_length + 'px;"></div>').appendTo('body');
 
 			bolt_length += height;
 
@@ -119,29 +119,29 @@
 		$('.animation-fin').remove();
 	}
 
-	// function rain(){
-	// 	var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
+	function rain(){
+		var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
 
-	// 	$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
+		$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
 
-	// 	$('body > div').delay(1500).queue(function(){
-	// 		$(this).addClass('animation-fin');
-	// 	});
+		$('body > div').delay(1500).queue(function(){
+			$(this).addClass('animation-fin');
+		});
 
-	// 	$('.animation-fin').remove();
-	// }
+		$('.animation-fin').remove();
+	}
 
-	// function brightness(){
-	// 	$('body').removeClass('bright');
-	// 	setTimeout(function() {
-	// 	    $('body').addClass('bright');
-	// 	},1);
-	// }
+	function brightness(){
+		$('body').removeClass('bright');
+		setTimeout(function() {
+		    $('body').addClass('bright');
+		},1);
+	}
 
-	// $(function() {
- //        rain();
- //        setInterval(function() { rain() }, 8);
- //    });
+	$(function() {
+        rain();
+        setInterval(function() { rain() }, 8);
+    });
 
  	
 </script>
