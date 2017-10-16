@@ -77,37 +77,72 @@
 <script type="text/javascript">
 	var current_segment = 1;
 
-	function bolt(){
+	$('body').click( function(){
+		bolt(0);
+	})
+
+	function bolt(starting_length, offsetX, is_sub_strand){
 		var offset_width = event.clientX;
 		var offset_height = event.clientY;
-		var bolt_length = 0;
-		var currentX = offset_width;	
+		var bolt_length = starting_length;
+		var current_direction; 
+		var currentX;
+		var sub_strand = is_sub_strand;
+
+		if ( sub_strand == true ){
+			currentX = offsetX;
+		}else{
+			currentX = offset_width;
+		}
 
 		while ( bolt_length < document.body.offsetHeight ) {
-			var segment_height = Math.floor((Math.random() * 48) + 12);
-			var segment_rotation = (Math.floor((Math.random() * 100) + 1 ))-50;
+			var segment_height = Math.floor((Math.random() * 15) + 8);
+			var segment_rotation = get_rotation();
 
-			var testing = $('<div id="lightning' + current_segment.toString() + '" class="lightning" style="opacity: 0.3;left: ' + (currentX - 2) + 'px; top: ' + bolt_length + 'px; height: ' + segment_height + 'px; transform: rotate(' + segment_rotation +'deg)"></div>').appendTo('body');
+			var testing = $('<div id="lightning' + current_segment.toString() + '" class="lightning" style="left: ' + currentX + 'px; top: ' + (bolt_length) + 'px; height: ' + segment_height + 'px; transform: rotate(' + segment_rotation +'deg)"></div>').appendTo('body');
 
 			var width = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().width;
 			var height = document.getElementById('lightning' + current_segment.toString()).getBoundingClientRect().height;
 			console.log('width: ' + width + '    height: ' + height);
 
-			// $('<div style="border: 1px solid red; z-index: 9999; width: ' + width + '; height: ' + height + '; position: absolute; left: ' + currentX + 'px; top: ' + bolt_length + 'px;"></div>').appendTo('body');
-
-			bolt_length += height;
-
 			if ( segment_rotation > 0 ) {
+
+				if ( current_direction == 1 ) {
+						currentX += 4;
+				}
+
 				$('#lightning' + current_segment.toString()).css('left',(currentX - 2)-((width/2)) + 'px');
+				
+				// $('<div style="border: 1px solid red; z-index: 9999; width: ' + width + '; height: ' + height + '; position: absolute; left: ' + ((currentX - 2)-(width)) + 'px; top: ' + bolt_length + 'px;"></div>').appendTo('body');
+
 				currentX -= width;
+
+				current_direction = 1;
 			}
 			if ( segment_rotation < 0 ) {
+
+				if ( current_direction == 0 ) {
+					currentX -= 4;
+				}
+
 				$('#lightning' + current_segment.toString()).css('left',(currentX - 2)+((width/2)) + 'px');
+
+				// $('<div style="border: 1px solid red; z-index: 9999; width: ' + width + '; height: ' + height + '; position: absolute; left: ' + (currentX - 2) + 'px; top: ' + bolt_length + 'px;"></div>').appendTo('body');
+
 				currentX += width;
-				segment_rotation = segment_rotation * -1;
+
+				current_direction = 0;
 			}
 
+			bolt_length += (height - 4);
+
 			current_segment ++;
+
+			var new_bolt = Math.floor((Math.random() * 100));
+
+			if ( new_bolt == 12 ) {
+				bolt(bolt_length, currentX, 1);
+			}
 		}
 
 		brightness();
@@ -117,6 +152,16 @@
 		});
 
 		$('.animation-fin').remove();
+	}
+
+	function get_rotation(){
+		var rotation = 0;
+
+		while ( rotation == 0 ){
+			rotation = (Math.floor((Math.random() * 90) + 1 ))-45;
+		}
+
+		return rotation;
 	}
 
 	function rain(){
