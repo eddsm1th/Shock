@@ -2,7 +2,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
-<body onclick="bolt()"></body>
+<body>
+	<section onclick="bolt()"></section>
+	<h1>lightning</h1>
+</body>
 
 <style type="text/css">
 	body{
@@ -10,6 +13,31 @@
 		padding: 0;
 		background: black;
 		overflow: hidden;
+	}
+
+	section{
+		z-index: 9999999999999999999999;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		opacity: 0;
+	}
+
+	h1{
+		z-index: 999999999999;
+		text-transform: uppercase;
+		position: absolute;
+		width: 100%;
+		color: black;
+		text-align: center;
+		top: 50%;
+		left: 50%;
+		margin: 0;
+		transform: translate(-50%, -50%) scale(1.055);
+		font-family: helvetica;
+		font-weight: 900;
+		font-size: 218pt;
 	}
 
 	.bright{
@@ -39,17 +67,19 @@
 	}
 
 	body .rain{
+		z-index: 9999999999999999999;
 		position: absolute;
 		top: 0;
 		background: gray;
-		width: 3px;
+		width: 1px;
 		height: 20px;
-		transform: rotate(-12deg);
+		/*transform: rotate(-12deg);*/
 
 		animation-name: rain;
 		animation-duration: 1.5s;
 		animation-timing-function: ease-in;
 		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
 	}
 
 	@keyframes lightning{
@@ -69,13 +99,14 @@
 		}
 		100%{
 			top: calc(100% + 20px);
-			margin-left: 200px;
+			/*margin-left: 200px;*/
 		}
 	}
 </style>
 
 <script type="text/javascript">
 	var current_segment = 1;
+	var rain_count = 1;
 
 	$('body').click( function(){
 		bolt(0);
@@ -96,7 +127,7 @@
 		}
 
 		while ( bolt_length < document.body.offsetHeight ) {
-			var segment_height = Math.floor((Math.random() * 15) + 8);
+			var segment_height = Math.floor((Math.random() * 15) + 10);
 			var segment_rotation = get_rotation();
 
 			var testing = $('<div id="lightning' + current_segment.toString() + '" class="lightning" style="left: ' + currentX + 'px; top: ' + (bolt_length) + 'px; height: ' + segment_height + 'px; transform: rotate(' + segment_rotation +'deg)"></div>').appendTo('body');
@@ -107,9 +138,7 @@
 
 			if ( segment_rotation > 0 ) {
 
-				if ( current_direction == 1 ) {
-						currentX += 4;
-				}
+				if ( current_direction == 1 ) { currentX += 4; }
 
 				$('#lightning' + current_segment.toString()).css('left',(currentX - 2)-((width/2)) + 'px');
 				
@@ -118,12 +147,9 @@
 				currentX -= width;
 
 				current_direction = 1;
-			}
-			if ( segment_rotation < 0 ) {
+			} else {
 
-				if ( current_direction == 0 ) {
-					currentX -= 4;
-				}
+				if ( current_direction == 0 ) { currentX -= 4; }
 
 				$('#lightning' + current_segment.toString()).css('left',(currentX - 2)+((width/2)) + 'px');
 
@@ -138,7 +164,7 @@
 
 			current_segment ++;
 
-			var new_bolt = Math.floor((Math.random() * 100));
+			var new_bolt = Math.floor((Math.random() * 200));
 
 			if ( new_bolt == 12 ) {
 				bolt(bolt_length, currentX, 1);
@@ -147,7 +173,7 @@
 
 		brightness();
 
-		$('body > div').delay(1500).queue(function(){
+		$('body > .lightning').delay(1500).queue(function(){
 			$(this).addClass('animation-fin');
 		});
 
@@ -158,22 +184,22 @@
 		var rotation = 0;
 
 		while ( rotation == 0 ){
-			rotation = (Math.floor((Math.random() * 90) + 1 ))-45;
+			rotation = (Math.floor((Math.random() * 100) + 1 ))-50;
 		}
 
 		return rotation;
 	}
 
 	function rain(){
-		var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
+		if ( rain_count < 200 ) {
+	 		var offset_width = (Math.floor((Math.random() * (document.body.offsetWidth + 200)) + 1));
 
-		$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
+			$('body').append('<div class="rain" style="left: ' + (offset_width - 200) + 'px; opacity: ' + (Math.random()) + '"></div>');
 
-		$('body > div').delay(1500).queue(function(){
-			$(this).addClass('animation-fin');
-		});
+			rain_count ++;
 
-		$('.animation-fin').remove();
+			console.log(rain_count);
+		}
 	}
 
 	function brightness(){
@@ -184,9 +210,8 @@
 	}
 
 	$(function() {
-        rain();
-        setInterval(function() { rain() }, 8);
-    });
-
+		rain();
+		setInterval(function() { rain() }, 15);
+	});
  	
 </script>
